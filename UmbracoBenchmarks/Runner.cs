@@ -32,6 +32,14 @@ namespace UmbracoBenchmarks
                     var sourceFolder = Path.Combine(dlDir, versionConfig.Version, "e");
                     if (!Directory.Exists(sourceFolder)) throw new InvalidOperationException($"The folder {sourceFolder} doesn't exist");
 
+                    //TODO: Instead of doing the cleanup routine in the Console runner (i.e. ConsoleHelper.Cleanup(consoleArgs.UmbracoFolder); ) 
+                    // do that here.
+
+                    //TODO: The runner exe is what will be running and therefore what will be benchmarked so instead of doing a post build command
+                    // on the runner exe projects, we need to manually copy out the runner files into corresponding /runner/{umbraco_version} folders
+                    // then we need to copy the Umbraco DLLs from the umbraco version to the runner. This will mean that we are actually benchmarking/running
+                    // the correct version DLLs and not what the runner was compiled with.
+
                     using (Process process = new Process())
                     {
                         ProcessStartInfo myProcessStartInfo = new ProcessStartInfo(runnerExe, $"{sourceFolder} {versionConfig.Version}")
