@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Diagnostics;
 using System.IO;
-using Umbraco.Bootstrapper;
+using UmbracoBenchmarks.Tools;
 using Umbraco.Core;
 using Umbraco.Core.Models;
 
-namespace Umbraco._78
+namespace UmbracoBenchmarks._78
 {
     class Program
     {
@@ -16,7 +16,6 @@ namespace Umbraco._78
             {
                 var consoleArgs = ConsoleHelper.ParseArgs(args);
                 ConsoleHelper.Setup(consoleArgs);
-                ConsoleHelper.Cleanup(consoleArgs.UmbracoFolder);
 
                 using (var app = new ConsoleApplication(consoleArgs.UmbracoFolder))
                 {

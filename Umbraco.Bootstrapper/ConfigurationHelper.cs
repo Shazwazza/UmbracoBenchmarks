@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Umbraco.Bootstrapper
+namespace UmbracoBenchmarks.Tools
 {
 
     public class ConfigurationHelper

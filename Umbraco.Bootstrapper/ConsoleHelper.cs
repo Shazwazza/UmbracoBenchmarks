@@ -1,28 +1,22 @@
 ﻿using System;
 using System.IO;
 
-namespace Umbraco.Bootstrapper
+namespace UmbracoBenchmarks.Tools
 {
     public class ConsoleHelper
     {
-        public static void Cleanup(DirectoryInfo umbWorkingDir)
-        {
-            Directory.Delete(Path.Combine(umbWorkingDir.FullName, "App_Plugins"), true);
-            Directory.Delete(Path.Combine(umbWorkingDir.FullName, "App_Data"), true);
-        }
-
         public static void Setup(ConsoleArgs consoleArgs)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"Booting umbraco {consoleArgs.UmbracoVersion}...");
+            Console.WriteLine($"Booting configured umbraco version {consoleArgs.UmbracoVersion}...");
 
-            //need sql ce engine files local to the runner (which is the working directory)
-            DirectoryCopy(
-                Path.Combine(consoleArgs.UmbracoFolder.FullName, "bin", "amd64"),
-                Path.Combine(Directory.GetCurrentDirectory(), "amd64"), true);
-            DirectoryCopy(
-                Path.Combine(consoleArgs.UmbracoFolder.FullName, "bin", "x86"),
-                Path.Combine(Directory.GetCurrentDirectory(), "x86"), true);
+            ////need sql ce engine files local to the runner (which is the working directory)
+            //DirectoryCopy(
+            //    Path.Combine(consoleArgs.UmbracoFolder.FullName, "bin", "amd64"),
+            //    Path.Combine(Directory.GetCurrentDirectory(), "amd64"), true);
+            //DirectoryCopy(
+            //    Path.Combine(consoleArgs.UmbracoFolder.FullName, "bin", "x86"),
+            //    Path.Combine(Directory.GetCurrentDirectory(), "x86"), true);
         }
 
         public static ConsoleArgs ParseArgs(string[] args)

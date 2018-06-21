@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{DCF9D27F-1FEB-4C28-A195-59CC2F40A41D}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Umbraco._78</RootNamespace>
-    <AssemblyName>Umbraco.78</AssemblyName>
+    <RootNamespace>UmbracoBenchmarks._78</RootNamespace>
+    <AssemblyName>UmbracoBenchmarks.78</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Umbraco._78.Program</StartupObject>
+    <StartupObject>UmbracoBenchmarks._78.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=3.3.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
@@ -222,9 +222,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Umbraco.Bootstrapper\Umbraco.Bootstrapper.csproj">
+    <ProjectReference Include="..\Umbraco.Bootstrapper\UmbracoBenchmarks.Tools.csproj">
       <Project>{1e85637b-c045-41ab-804d-cb7e2455e12d}</Project>
-      <Name>Umbraco.Bootstrapper</Name>
+      <Name>UmbracoBenchmarks.Tools</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

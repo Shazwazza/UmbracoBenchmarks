@@ -5,8 +5,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Umbraco.Bootstrapper
+namespace UmbracoBenchmarks.Tools
 {
+
     public static class ReflectionHelper
     {
         public static object GetStaticProperty(this Type type, string propertyName, Func<IEnumerable<PropertyInfo>, PropertyInfo> filter = null)

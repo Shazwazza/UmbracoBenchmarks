@@ -9,9 +9,9 @@ using Umbraco.Core.Configuration;
 using Umbraco.Core.Configuration.UmbracoSettings;
 using Umbraco.Core.IO;
 using Umbraco.Core.ObjectResolution;
-using Umbraco.Bootstrapper;
+using UmbracoBenchmarks.Tools;
 
-namespace Umbraco._77
+namespace UmbracoBenchmarks._77
 {
     //STOLEN FROM https://github.com/Shazwazza/UmbracoLinqPadDriver
 
@@ -24,6 +24,7 @@ namespace Umbraco._77
             : base(umbracoApplication)
         {
             _umbracoFolder = umbracoFolder;
+            UmbracoUtilities.SetIOHelperRoot(typeof(IOHelper), _umbracoFolder.FullName);
         }
 
         /// <summary>

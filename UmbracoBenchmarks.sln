@@ -5,11 +5,11 @@ VisualStudioVersion = 15.0.27703.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoBenchmarks", "UmbracoBenchmarks\UmbracoBenchmarks.csproj", "{3A878E0A-E779-410C-8B59-25E86F5BAE22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Umbraco.Bootstrapper", "Umbraco.Bootstrapper\Umbraco.Bootstrapper.csproj", "{1E85637B-C045-41AB-804D-CB7E2455E12D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoBenchmarks.Tools", "Umbraco.Bootstrapper\UmbracoBenchmarks.Tools.csproj", "{1E85637B-C045-41AB-804D-CB7E2455E12D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Umbraco.77", "Umbraco.77\Umbraco.77.csproj", "{4C6FF0CC-1E3A-4781-BB99-EC4DDCAF2B7E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoBenchmarks.77", "Umbraco.77\UmbracoBenchmarks.77.csproj", "{4C6FF0CC-1E3A-4781-BB99-EC4DDCAF2B7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Umbraco.78", "Umbraco.78\Umbraco.78.csproj", "{DCF9D27F-1FEB-4C28-A195-59CC2F40A41D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoBenchmarks.78", "Umbraco.78\UmbracoBenchmarks.78.csproj", "{DCF9D27F-1FEB-4C28-A195-59CC2F40A41D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

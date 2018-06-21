@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Umbraco.Bootstrapper
+namespace UmbracoBenchmarks.Tools
 {
     public class ConsoleArgs
     {

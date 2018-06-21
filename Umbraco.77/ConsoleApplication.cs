@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
 using Umbraco.Core.IO;
-using Umbraco.Bootstrapper;
+using UmbracoBenchmarks.Tools;
 using Umbraco.Core;
+using Umbraco.Core.Configuration;
 
-namespace Umbraco._77
+namespace UmbracoBenchmarks._77
 {
     //STOLEN FROM https://github.com/Shazwazza/UmbracoLinqPadDriver
 
@@ -19,14 +20,13 @@ namespace Umbraco._77
 
         public void StartApplication()
         {
-            //pre-init
-            typeof(IOHelper).CallStaticMethod("SetRootDirectory", _umbracoFolder.FullName);
-
             //Now boot
             GetBootManager()
                 .Initialize()
                 .Startup(appContext => OnApplicationStarting(this, new EventArgs()))
                 .Complete(appContext => OnApplicationStarted(this, new EventArgs()));
+
+            Console.WriteLine($"Umbraco version {UmbracoVersion.GetSemanticVersion()} started");
         }
 
         public ApplicationContext ApplicationContext => ApplicationContext.Current;

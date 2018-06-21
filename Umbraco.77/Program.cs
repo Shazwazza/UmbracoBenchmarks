@@ -2,11 +2,11 @@
 using System.Linq;
 using System.Diagnostics;
 using System.IO;
-using Umbraco.Bootstrapper;
+using UmbracoBenchmarks.Tools;
 using Umbraco.Core;
 using Umbraco.Core.Models;
 
-namespace Umbraco._77
+namespace UmbracoBenchmarks._77
 {
     class Program
     {
@@ -16,7 +16,6 @@ namespace Umbraco._77
             {
                 var consoleArgs = ConsoleHelper.ParseArgs(args);
                 ConsoleHelper.Setup(consoleArgs);
-                ConsoleHelper.Cleanup(consoleArgs.UmbracoFolder);
 
                 using (var app = new ConsoleApplication(consoleArgs.UmbracoFolder))
                 {
@@ -33,6 +32,7 @@ namespace Umbraco._77
             }
         }
 
+        //TODO: Move to shared lib ... maybe with 'dynamic' ?
         private static void CreateContent(ApplicationContext appCtx)
         {
             Console.Write("Creating content... ");
