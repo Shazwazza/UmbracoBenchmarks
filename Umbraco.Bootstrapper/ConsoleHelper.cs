@@ -16,8 +16,7 @@ namespace Umbraco.Bootstrapper
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"Booting umbraco {consoleArgs.UmbracoVersion}...");
 
-            //need sql ce files
-            Console.WriteLine($"{Path.Combine(Directory.GetCurrentDirectory(), "amd64")}");
+            //need sql ce engine files local to the runner (which is the working directory)
             DirectoryCopy(
                 Path.Combine(consoleArgs.UmbracoFolder.FullName, "bin", "amd64"),
                 Path.Combine(Directory.GetCurrentDirectory(), "amd64"), true);
