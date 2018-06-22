@@ -56,6 +56,13 @@ namespace UmbracoBenchmarks._77
             return base.Startup(afterStartup);
         }
 
+        public override IBootManager Complete(Action<ApplicationContext> afterComplete)
+        {   
+            var result = base.Complete(afterComplete);
+            Console.WriteLine($"Umbraco version {UmbracoVersion.GetSemanticVersion()} started from folder {typeof(ApplicationContext).Assembly.CodeBase}");
+            return result;
+        }
+
         /// <summary>
         /// Disables all application level cache
         /// </summary>

@@ -25,8 +25,6 @@ namespace UmbracoBenchmarks._78
                 .Initialize()
                 .Startup(appContext => OnApplicationStarting(this, new EventArgs()))
                 .Complete(appContext => OnApplicationStarted(this, new EventArgs()));
-
-            Console.WriteLine($"Umbraco version {UmbracoVersion.GetSemanticVersion()} started");
         }
 
         public ApplicationContext ApplicationContext => ApplicationContext.Current;

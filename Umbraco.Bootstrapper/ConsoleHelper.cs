@@ -9,14 +9,6 @@ namespace UmbracoBenchmarks.Tools
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"Booting configured umbraco version {consoleArgs.UmbracoVersion}...");
-
-            ////need sql ce engine files local to the runner (which is the working directory)
-            //DirectoryCopy(
-            //    Path.Combine(consoleArgs.UmbracoFolder.FullName, "bin", "amd64"),
-            //    Path.Combine(Directory.GetCurrentDirectory(), "amd64"), true);
-            //DirectoryCopy(
-            //    Path.Combine(consoleArgs.UmbracoFolder.FullName, "bin", "x86"),
-            //    Path.Combine(Directory.GetCurrentDirectory(), "x86"), true);
         }
 
         public static ConsoleArgs ParseArgs(string[] args)
