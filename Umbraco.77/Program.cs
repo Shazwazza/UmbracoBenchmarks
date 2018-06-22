@@ -6,6 +6,7 @@ using UmbracoBenchmarks.Tools;
 using Umbraco.Core;
 using Umbraco.Core.Models;
 using UmbracoBenchmarks.Tools.Tests;
+using Umbraco.Core.Configuration;
 
 namespace UmbracoBenchmarks._77
 {
@@ -22,7 +23,7 @@ namespace UmbracoBenchmarks._77
                 {
                     app.StartApplication();
                     UmbracoUtilities.SetupDb(app.ApplicationContext);
-                    CreateContent.Execute(app.ApplicationContext);
+                    CreateContentTypeBenchmark.Execute(app.ApplicationContext, UmbracoVersion.Current.ToString());
                 }
 
                 Console.WriteLine("Done");

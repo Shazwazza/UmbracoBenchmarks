@@ -1,10 +1,14 @@
-﻿using System;
+﻿using BenchmarkDotNet.Running;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using static UmbracoBenchmarks.Md5VsSha256;
+using System.Xml.XPath;
 
 namespace UmbracoBenchmarks
 {
@@ -31,15 +35,10 @@ namespace UmbracoBenchmarks
 
                     var umbracoFolder = Path.Combine(dlDir, versionConfig.Version, "e");
                     if (!Directory.Exists(umbracoFolder)) throw new InvalidOperationException($"The folder {umbracoFolder} doesn't exist");
-
                     
                     CleanupUmbracoFolder(umbracoFolder);
                     var umbracoRunnerExe = CopyRunnerFiles(umbracoFolder, runnerExe);
-
-                    //TODO: The runner exe is what will be running and therefore what will be benchmarked so instead of doing a post build command
-                    // on the runner exe projects, we need to manually copy out the runner files into corresponding /runner/{umbraco_version} folders
-                    // then we need to copy the Umbraco DLLs from the umbraco version to the runner. This will mean that we are actually benchmarking/running
-                    // the correct version DLLs and not what the runner was compiled with.
+                    //AddConfigTransforms(umbracoFolder, runnerExe);
 
                     using (Process process = new Process())
                     {
@@ -75,12 +74,92 @@ namespace UmbracoBenchmarks
         {
             var umbracoRunnerExe = Path.Combine(umbracoFolder, "bin", Path.GetFileName(runnerExe));
             File.Copy(runnerExe, umbracoRunnerExe, true);
-            //copy the other UmbracoBenchmark files too
-            foreach(var f in Directory.EnumerateFiles(Path.GetDirectoryName(runnerExe), "UmbracoBenchmarks.*", SearchOption.TopDirectoryOnly))
+
+            //copy the other UmbracoBenchmark and required files too
+
+            var files = new[] {
+                "UmbracoBenchmarks.*",
+                "BenchmarkDotNet.*", 
+                "System.Threading.Tasks.Extensions.*", 
+                "System.Collections.Immutable.*",
+                "Microsoft.CodeAnalysis.*",
+                "Microsoft.DotNet.PlatformAbstractions.*",
+                "System.Reflection.*",
+                "System.IO.FileSystem.*",
+                "System.Runtime.InteropServices.*",
+                "System.Security.Cryptography.*",
+            };
+
+            foreach (var file in files)
             {
-                File.Copy(f, Path.Combine(umbracoFolder, "bin", Path.GetFileName(f)), true);
+                foreach (var f in Directory.EnumerateFiles(Path.GetDirectoryName(runnerExe), file, SearchOption.TopDirectoryOnly))
+                {
+                    File.Copy(f, Path.Combine(umbracoFolder, "bin", Path.GetFileName(f)), true);
+                }
             }
+
             return umbracoRunnerExe;
+        }
+
+        private void AddConfigTransforms(string umbracoFolder, string runnerExe)
+        {
+            var sourceConfigFile = Path.Combine(Path.GetDirectoryName(runnerExe), Path.GetFileName(runnerExe) + ".config");
+            if (!File.Exists(sourceConfigFile)) throw new InvalidOperationException($"The file {sourceConfigFile} was not found");
+            var webConfigFile = Path.Combine(umbracoFolder, "web.config");
+            if (!File.Exists(webConfigFile)) throw new InvalidOperationException($"The file {webConfigFile } was not found");
+            
+            XDocument webConfig;
+            using (var reader = File.OpenText(webConfigFile))
+            {
+                webConfig = XDocument.Load(reader);
+            }
+
+            XDocument sourceConfig;
+            using (var reader = File.OpenText(sourceConfigFile))
+            {
+                sourceConfig = XDocument.Load(reader);
+            }
+
+            var redirects = new[] { "System.Collections.Immutable" };
+
+            var assemblyBindingRoot = webConfig.XPathSelectElement(GetAssemblyBindingRoot());
+            if (assemblyBindingRoot == null) throw new InvalidOperationException("No assembly binding root found");
+
+            foreach (var r in redirects)
+            {
+                var sourceRedirect = sourceConfig.XPathSelectElement(GetBindingXPath(r));
+                if (sourceRedirect == null) throw new InvalidOperationException($"No XML element found for assembly {r}");
+
+                var destRedirect = webConfig.XPathSelectElement(GetBindingXPath(r));
+                if (destRedirect != null)
+                {
+                    //remove it so we can re-add it
+                    destRedirect.Remove();
+                }
+
+                assemblyBindingRoot.Add(sourceRedirect);
+            }
+
+            webConfig.Save(webConfigFile);
+        }
+
+        /// <summary>
+        /// Ugly xpath so we don't have to worry about xml namespaces
+        /// </summary>
+        /// <param name="assemblyName"></param>
+        /// <returns></returns>
+        private string GetBindingXPath(string assemblyName)
+        {
+            return $"/*[name()='configuration']/*[name()='runtime']/*[name()='assemblyBinding']//*[name()='dependentAssembly' and ./*[name()='assemblyIdentity'][@name='{assemblyName}']]";
+        }
+
+        /// <summary>
+        /// Ugly xpath so we don't have to worry about xml namespaces
+        /// </summary>
+        /// <returns></returns>
+        private string GetAssemblyBindingRoot()
+        {
+            return $"/*[name()='configuration']/*[name()='runtime']/*[name()='assemblyBinding']";
         }
 
         private void CleanupUmbracoFolder(string umbracoFolder)

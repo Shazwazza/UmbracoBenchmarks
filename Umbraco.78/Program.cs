@@ -22,7 +22,7 @@ namespace UmbracoBenchmarks._78
                 {
                     app.StartApplication();
                     UmbracoUtilities.SetupDb(app.ApplicationContext);
-                    CreateContent.Execute(app.ApplicationContext);
+                    //CreateContent.Execute(app.ApplicationContext);
                 }
 
                 Console.WriteLine("Done");
