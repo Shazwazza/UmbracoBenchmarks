@@ -1,7 +1,10 @@
 ﻿using System;
+using Umbraco.Core;
+using Umbraco.Core.IO;
 
 namespace UmbracoBenchmarks.Tools
 {
+
     /// <summary>
     /// Shared reflection utilities for Umbraco
     /// </summary>
@@ -10,9 +13,25 @@ namespace UmbracoBenchmarks.Tools
     /// </remarks>
     public static class UmbracoUtilities
     {
-        public static void SetIOHelperRoot(Type ioHelperType, string umbracoFolder)
+        public static void SetIOHelperRoot(string umbracoFolder)
         {
-            ioHelperType.CallStaticMethod("SetRootDirectory", umbracoFolder);
+            typeof(IOHelper).CallStaticMethod("SetRootDirectory", umbracoFolder);
+        }
+
+        public static void SetupDb(ApplicationContext appCtx)
+        {
+            Console.Write("Creating and installing DB... ");
+
+            appCtx.DatabaseContext.ConfigureEmbeddedDatabaseConnection();
+            var result = appCtx.DatabaseContext.CallMethod("CreateDatabaseSchemaAndData", appCtx);
+            var success = (bool)result.GetPropertyValue("Success");
+
+            Console.WriteLine(success ? "OK" : "Failed");
+
+            if (!success)
+            {
+                Console.Write(result.GetPropertyValue("Message"));
+            }
         }
     }
 }

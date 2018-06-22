@@ -15,16 +15,13 @@ namespace UmbracoBenchmarks._77
 {
     //STOLEN FROM https://github.com/Shazwazza/UmbracoLinqPadDriver
 
-    public class ConsoleBootManager : CoreBootManager
+    public class ConsoleBootManager : ConsoleBootManagerBase
     {
-        private readonly DirectoryInfo _umbracoFolder;
-        private Configuration _config;
 
         public ConsoleBootManager(UmbracoApplicationBase umbracoApplication, DirectoryInfo umbracoFolder)
-            : base(umbracoApplication)
+            : base(umbracoApplication, umbracoFolder)
         {
-            _umbracoFolder = umbracoFolder;
-            UmbracoUtilities.SetIOHelperRoot(typeof(IOHelper), _umbracoFolder.FullName);
+            UmbracoUtilities.SetIOHelperRoot(umbracoFolder.FullName);
         }
 
         /// <summary>
@@ -33,17 +30,7 @@ namespace UmbracoBenchmarks._77
         /// <returns/>
         public override IBootManager Initialize()
         {
-            _config = ConfigurationHelper.GetConfig(_umbracoFolder.FullName);
-
-            ConfigureUmbracoSettings(_config);
-            ConfigurationHelper.CopyConnectionStrings(_config, Path.Combine(_umbracoFolder.FullName, "App_Data"));
-            //Use SQLCE (for now)
-            ConfigurationHelper.SetUmbracoConnectionString(ConfigurationHelper.GetEmbeddedDatabaseConnectionString(), Umbraco.Core.Constants.DatabaseProviders.SqlCe);
-            ConfigurationHelper.CopyAppSettings(_config);
-
-            //Few folders that need to exist
-            Directory.CreateDirectory(IOHelper.MapPath("~/App_Plugins"));
-
+            ConfigureUmbracoSettings(Config);
             return base.Initialize();
         }
 
@@ -51,18 +38,11 @@ namespace UmbracoBenchmarks._77
         {
             //This is a special case and is due to a timing issue, we need to wait until the appCtx singleton is created
             //and then we can forcefully configure the file system providers since unfortunatley some of those rely on the singleton
-            ConfigureFileSystemProviders(_config);
+            ConfigureFileSystemProviders(Config);
 
             return base.Startup(afterStartup);
         }
-
-        public override IBootManager Complete(Action<ApplicationContext> afterComplete)
-        {   
-            var result = base.Complete(afterComplete);
-            Console.WriteLine($"Umbraco version {UmbracoVersion.GetSemanticVersion()} started from folder {typeof(ApplicationContext).Assembly.CodeBase}");
-            return result;
-        }
-
+        
         /// <summary>
         /// Disables all application level cache
         /// </summary>
