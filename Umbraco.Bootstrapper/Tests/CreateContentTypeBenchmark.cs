@@ -19,21 +19,17 @@ using Umbraco.Core.Models;
 
 namespace UmbracoBenchmarks.Tools.Tests
 {
+
     public class CreateContentTypeBenchmark
     {
-        public static Summary Execute(ApplicationContext appCtx, string version)
-        {
-            _appCtx = appCtx;
-            return BenchmarkRunner.Run<CreateContentTypeBenchmark>(new UmbracoDefaultConfig(version));
-        }
-        private static ApplicationContext _appCtx;
-
+        private ApplicationContext _appCtx;
         private List<IDataTypeDefinition> _dataTypes;
         private string _alias;
 
         [GlobalSetup]
         public void Setup()
         {
+            _appCtx = ApplicationContext.Current;
             var allDts = _appCtx.Services.DataTypeService.GetAllDataTypeDefinitions().ToList();
             _dataTypes = new[] { "Label", "Textstring", "Richtext editor" }.Select(x =>
             {
@@ -41,14 +37,6 @@ namespace UmbracoBenchmarks.Tools.Tests
                 if (dt == null) throw new InvalidOperationException($"No data type found by name {x}");
                 return dt;
             }).ToList();
-        }
-
-        [GlobalCleanup]
-        public void Cleanup()
-        {
-            Console.WriteLine("OK");
-            Console.WriteLine($"Total content types: {_appCtx.Services.ContentTypeService.GetAllContentTypes().Count()}");
-            Console.ResetColor();
         }
 
         [IterationSetup]
