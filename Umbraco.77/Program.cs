@@ -14,25 +14,31 @@ namespace UmbracoBenchmarks._77
     {
         static void Main(string[] args)
         {
-            try
-            {
-                var consoleArgs = ConsoleHelper.ParseArgs(args);
-                ConsoleHelper.Setup(consoleArgs);
-
-                using (var app = new ConsoleApplication(consoleArgs.UmbracoFolder))
-                {
-                    app.StartApplication();
-                    UmbracoUtilities.SetupDb(app.ApplicationContext);
-                    var result = BenchmarkCollection.RunBenchmarks(UmbracoVersion.Current.ToString());
-                }
-
-                Console.WriteLine("Done");
-            }
-            finally
-            {
-                Console.ResetColor();
-            }
+            var consoleArgs = ConsoleHelper.ParseArgs(args);
+            var result = BenchmarkCollection.RunBenchmarks(
+                UmbracoVersion.Current.ToString(),
+                consoleArgs.ArtifactFolder,
+                () => StartUmbraco(consoleArgs),
+                ShutdownUmbraco);
         }
-        
+
+        private static ConsoleApplication _consoleApp;
+        private static volatile bool _setupRun = false;
+        private static void StartUmbraco(ConsoleArgs consoleArgs)
+        {
+            if (_setupRun) return;
+            _setupRun = true;
+
+            Console.WriteLine("START UMBRACO");
+            _consoleApp = new ConsoleApplication(consoleArgs.UmbracoFolder);
+            _consoleApp.StartApplication();
+            UmbracoUtilities.SetupDb(_consoleApp.ApplicationContext);
+        }
+
+        private static void ShutdownUmbraco()
+        {
+            Console.WriteLine("SHUTDOWN UMBRACO");
+        }
+
     }
 }

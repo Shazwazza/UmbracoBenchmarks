@@ -1,4 +1,7 @@
 ﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Characteristics;
+using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Reports;
 using BenchmarkDotNet.Running;
 using System;
 using System.Linq;
@@ -7,15 +10,16 @@ using Umbraco.Core.Models;
 
 namespace UmbracoBenchmarks.Tools.Tests
 {
-    public class CreateContentBenchmark
+
+    public class ContentOperations : UmbracoOperation
     {
         private ApplicationContext _appCtx;
         private IContentType _contentType;
         private string _alias;
 
-        [GlobalSetup]
-        public void Setup()
+        public override void Setup()
         {
+            base.Setup();
             _appCtx = ApplicationContext.Current;
             _contentType = _appCtx.Services.ContentTypeService.GetAllContentTypes().First();
         }
@@ -27,7 +31,7 @@ namespace UmbracoBenchmarks.Tools.Tests
         }
 
         [Benchmark]
-        public void Run()
+        public void CreateContent()
         {   
             var c = new Content(_alias, -1, _contentType);
             foreach (var p in _contentType.PropertyTypes) 

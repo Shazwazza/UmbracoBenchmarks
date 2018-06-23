@@ -7,11 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using static UmbracoBenchmarks.Md5VsSha256;
 using System.Xml.XPath;
+using UmbracoBenchmarks.Infrastructure;
 
 namespace UmbracoBenchmarks
 {
+
     public class Runner
     {
         public void Run(string currDir, IEnumerable<ConfigVersion> configVersions)
@@ -19,50 +20,72 @@ namespace UmbracoBenchmarks
             if (string.IsNullOrWhiteSpace(currDir))
                 throw new ArgumentException("message", nameof(currDir));
 
-            var dlDir = Path.Combine(currDir, "UmbracoVersions");            
+            var dlDir = Path.Combine(currDir, "UmbracoVersions");
             if (!Directory.Exists(dlDir)) throw new InvalidOperationException($"The folder {dlDir} doesn't exist");
             var runnerDir = Path.Combine(currDir, "Runners");
             if (!Directory.Exists(dlDir)) throw new InvalidOperationException($"The folder {runnerDir} doesn't exist");
 
-            try
+            var runId = Guid.NewGuid(); //used to store artifacts for the current run
+
+            foreach (var versionConfig in configVersions)
             {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                
-                foreach (var versionConfig in configVersions)
+                var runnerExe = Path.Combine(runnerDir, versionConfig.Runner);
+                if (!File.Exists(runnerExe)) throw new InvalidOperationException($"The file {runnerExe} doesn't exist");
+
+                var umbracoFolder = Path.Combine(dlDir, versionConfig.Version, "e");
+                if (!Directory.Exists(umbracoFolder)) throw new InvalidOperationException($"The folder {umbracoFolder} doesn't exist");
+
+                CleanupUmbracoFolder(umbracoFolder);
+                //AddConfigTransforms(umbracoFolder, runnerExe);
+            }
+
+            //NOTE: For testing
+            //BenchmarkRunner.Run<TestBenchmark>(new AllowNonOptimized());
+
+            //NOTE: Attempt at trying a custom toolchain
+            //RunCustomBenchmarks(dlDir, runnerDir, configVersions, runId);
+
+            //NOTE: Runs our cmd apps in process (and is 'working')
+            RunSeparateCmdBenchmarks(dlDir, runnerDir, configVersions, runId);
+        }
+
+        private void RunCustomBenchmarks(string dlDir, string runnerDir, IEnumerable<ConfigVersion> configVersions, Guid runId)
+        {
+            var umbBenchmarkConfig = new UmbracoBenchmarkConfig(dlDir, runnerDir, configVersions, runId);
+            BenchmarkRunner.Run<TestBenchmark>(umbBenchmarkConfig);
+        }
+
+        private void RunSeparateCmdBenchmarks(string dlDir, string runnerDir, IEnumerable<ConfigVersion> configVersions, Guid runId)
+        {
+            foreach (var versionConfig in configVersions)
+            {
+                var runnerExe = Path.Combine(runnerDir, versionConfig.Runner);
+                if (!File.Exists(runnerExe)) throw new InvalidOperationException($"The file {runnerExe} doesn't exist");
+
+                var umbracoFolder = Path.Combine(dlDir, versionConfig.Version, "e");
+                if (!Directory.Exists(umbracoFolder)) throw new InvalidOperationException($"The folder {umbracoFolder} doesn't exist");
+
+                var umbracoRunnerExe = CopyRunnerFiles(umbracoFolder, runnerExe);
+
+                using (Process process = new Process())
                 {
-                    var runnerExe = Path.Combine(runnerDir, versionConfig.Runner);
-                    if (!File.Exists(runnerExe)) throw new InvalidOperationException($"The file {runnerExe} doesn't exist");
-
-                    var umbracoFolder = Path.Combine(dlDir, versionConfig.Version, "e");
-                    if (!Directory.Exists(umbracoFolder)) throw new InvalidOperationException($"The folder {umbracoFolder} doesn't exist");
-                    
-                    CleanupUmbracoFolder(umbracoFolder);
-                    var umbracoRunnerExe = CopyRunnerFiles(umbracoFolder, runnerExe);
-                    //AddConfigTransforms(umbracoFolder, runnerExe);
-
-                    using (Process process = new Process())
+                    ProcessStartInfo myProcessStartInfo = new ProcessStartInfo(umbracoRunnerExe, $"{umbracoFolder} {versionConfig.Version} {runId}")
                     {
-                        ProcessStartInfo myProcessStartInfo = new ProcessStartInfo(umbracoRunnerExe, $"{umbracoFolder} {versionConfig.Version}")
-                        {
-                            UseShellExecute = false,
-                            //WorkingDirectory = sourceFolder
-                            WorkingDirectory = Path.GetDirectoryName(umbracoRunnerExe)
-                        };
-                        process.StartInfo = myProcessStartInfo;
-                        if (!process.Start())
-                            break; //don't iterate if a process dies
-                        process.WaitForExit();
-                        if (process.ExitCode != 0)
-                            break; //don't iterate if a process dies
-                    }
+                        UseShellExecute = false,
+                        //WorkingDirectory = sourceFolder
+                        WorkingDirectory = Path.GetDirectoryName(umbracoRunnerExe)
+                    };
+                    process.StartInfo = myProcessStartInfo;
+                    if (!process.Start())
+                        break; //don't iterate if a process dies
+                    process.WaitForExit();
+                    if (process.ExitCode != 0)
+                        break; //don't iterate if a process dies
                 }
             }
-            finally
-            {
-                Console.ResetColor();
-            }
-            
         }
+        
+        
 
         /// <summary>
         /// Copy the runner exe and associated UmbracoBenchmark files to the source umbraco /bin folder to ensure that the 
@@ -79,8 +102,8 @@ namespace UmbracoBenchmarks
 
             var files = new[] {
                 "UmbracoBenchmarks.*",
-                "BenchmarkDotNet.*", 
-                "System.Threading.Tasks.Extensions.*", 
+                "BenchmarkDotNet.*",
+                "System.Threading.Tasks.Extensions.*",
                 "System.Collections.Immutable.*",
                 "Microsoft.CodeAnalysis.*",
                 "Microsoft.DotNet.PlatformAbstractions.*",
@@ -107,7 +130,7 @@ namespace UmbracoBenchmarks
             if (!File.Exists(sourceConfigFile)) throw new InvalidOperationException($"The file {sourceConfigFile} was not found");
             var webConfigFile = Path.Combine(umbracoFolder, "web.config");
             if (!File.Exists(webConfigFile)) throw new InvalidOperationException($"The file {webConfigFile } was not found");
-            
+
             XDocument webConfig;
             using (var reader = File.OpenText(webConfigFile))
             {

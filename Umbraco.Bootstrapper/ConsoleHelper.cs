@@ -13,12 +13,13 @@ namespace UmbracoBenchmarks.Tools
 
         public static ConsoleArgs ParseArgs(string[] args)
         {
-            if (args.Length != 2)
+            if (args.Length != 3)
                 throw new InvalidOperationException("args length must be 3");
 
             if (!Directory.Exists(args[0])) throw new InvalidOperationException($"The folder {args[0]} doesn't exist");
+            if (!Guid.TryParse(args[2], out var guidRunId)) throw new InvalidOperationException($"The {args[2]} isn't a guid");
 
-            return new ConsoleArgs(new DirectoryInfo(args[0]), args[1]);
+            return new ConsoleArgs(new DirectoryInfo(args[0]), args[1], guidRunId);
         }
 
         private static void DirectoryCopy(string sourceDirName, string destDirName, bool copySubDirs)

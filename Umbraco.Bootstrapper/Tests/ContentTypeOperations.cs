@@ -20,15 +20,16 @@ using Umbraco.Core.Models;
 namespace UmbracoBenchmarks.Tools.Tests
 {
 
-    public class CreateContentTypeBenchmark
+    public class ContentTypeOperations : UmbracoOperation
     {
         private ApplicationContext _appCtx;
         private List<IDataTypeDefinition> _dataTypes;
         private string _alias;
 
-        [GlobalSetup]
-        public void Setup()
+        public override void Setup()
         {
+            base.Setup();
+
             _appCtx = ApplicationContext.Current;
             var allDts = _appCtx.Services.DataTypeService.GetAllDataTypeDefinitions().ToList();
             _dataTypes = new[] { "Label", "Textstring", "Richtext editor" }.Select(x =>
@@ -46,8 +47,8 @@ namespace UmbracoBenchmarks.Tools.Tests
         }
 
         [Benchmark]
-        public void Run()
-        {   
+        public void CreateContentType()
+        {
             var ct = new ContentType(-1)
             {
                 Alias = _alias,

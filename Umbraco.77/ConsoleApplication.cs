@@ -33,5 +33,6 @@ namespace UmbracoBenchmarks._77
         {
             return new ConsoleBootManager(this, _umbracoFolder);
         }
+
     }
 }

@@ -305,9 +305,11 @@
     <Compile Include="ReflectionHelper.cs" />
     <Compile Include="SummaryExtensions.cs" />
     <Compile Include="Tests\BenchmarkCollection.cs" />
-    <Compile Include="Tests\CreateContentBenchmark.cs" />
-    <Compile Include="Tests\CreateContentTypeBenchmark.cs" />
+    <Compile Include="Tests\ContentOperations.cs" />
+    <Compile Include="Tests\ContentTypeOperations.cs" />
+    <Compile Include="Tests\GlobalSetupCallbacks.cs" />
     <Compile Include="Tests\UmbracoDefaultConfig.cs" />
+    <Compile Include="Tests\UmbracoEngineFactory.cs" />
     <Compile Include="UmbracoUtilities.cs" />
   </ItemGroup>
   <ItemGroup>

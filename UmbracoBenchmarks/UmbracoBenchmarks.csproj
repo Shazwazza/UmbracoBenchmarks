@@ -151,10 +151,13 @@
   <ItemGroup>
     <Compile Include="ConfigVersion.cs" />
     <Compile Include="Downloader.cs" />
-    <Compile Include="Md5VsSha256.cs" />
+    <Compile Include="Infrastructure\UmbracoBenchmarkConfig.cs" />
+    <Compile Include="Infrastructure\UmbracoBenchmarkToolchain.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runner.cs" />
+    <Compile Include="Infrastructure\SynchronousProcessOutputLoggerWithDiagnoser.cs" />
+    <Compile Include="Infrastructure\UmbracoBenchmarkExecutor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
