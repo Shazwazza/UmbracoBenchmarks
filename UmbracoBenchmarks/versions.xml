@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?> 
 <versions>
     <version value="7.5.0" source="https://our.umbraco.com/ReleaseDownload?id=155558" runner="7.5.0\UmbracoBenchmarks.75.exe" />
+    <version value="7.5.14" source="https://our.umbraco.com/ReleaseDownload?id=270665" runner="7.5.0\UmbracoBenchmarks.75.exe" />
     <!--TODO: Need to create a 7.6.0 runner-->
     <!--<version value="7.6.0" source="https://our.umbraco.com/ReleaseDownload?id=270489" runner="7.5.0\UmbracoBenchmarks.75.exe" />-->
     <version value="7.7.0" source="https://our.umbraco.com/ReleaseDownload?id=271889" runner="7.7.0\UmbracoBenchmarks.77.exe" />

@@ -5,11 +5,12 @@ namespace UmbracoBenchmarks.Tools
 {
     public class ConsoleArgs
     {
-        public ConsoleArgs(DirectoryInfo umbracoFolder, string umbracoVersion, Guid runId)
+        public ConsoleArgs(DirectoryInfo umbracoFolder, string umbracoVersion, Guid runId, int index)
         {
             UmbracoFolder = umbracoFolder;
             UmbracoVersion = umbracoVersion;
             RunId = runId;
+            Index = index;
         }
 
         public DirectoryInfo UmbracoFolder { get; }
@@ -27,5 +28,6 @@ namespace UmbracoBenchmarks.Tools
         }
         public string UmbracoVersion { get; }
         public Guid RunId { get; }
+        public int Index { get; }
     }
 }

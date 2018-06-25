@@ -14,9 +14,9 @@ namespace UmbracoBenchmarks.Tools.Tests
 {
     public class UmbracoDefaultConfig : ManualConfig
     {
-        public UmbracoDefaultConfig(string version, Guid runId, DirectoryInfo artifactFolder, Action globalSetupAction, Action globalCleanupAction)
+        public UmbracoDefaultConfig(string version, ConsoleArgs consoleArgs, Action globalSetupAction, Action globalCleanupAction)
         {
-            ArtifactsPath = artifactFolder.FullName;
+            ArtifactsPath = consoleArgs.ArtifactFolder.FullName;
 
             Add(JitOptimizationsValidator.DontFailOnError); // ALLOW NON-OPTIMIZED DLLS
 
@@ -26,7 +26,7 @@ namespace UmbracoBenchmarks.Tools.Tests
             //csv exporter per version
             Add(CsvExporter.Default);
             //combined csv report per runId
-            Add(new AppendingCsvExporter(runId));
+            Add(new AppendingCsvExporter(consoleArgs.RunId));
 
             Set(new SummaryStyle { PrintUnitsInContent = false });
 
@@ -38,6 +38,8 @@ namespace UmbracoBenchmarks.Tools.Tests
                 .With(RunStrategy.Monitoring)
                 .With(InProcessToolchain.Instance)
                 .WithId(version);
+
+            Add(new TagColumn("VersionIndex", s => consoleArgs.Index.ToString()));
 
             Add(job);
         }

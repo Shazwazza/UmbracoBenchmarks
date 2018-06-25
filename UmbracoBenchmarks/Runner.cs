@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
@@ -40,8 +41,10 @@ namespace UmbracoBenchmarks
         
         private void RunSeparateCmdBenchmarks(string dlDir, string runnerDir, IEnumerable<ConfigVersion> configVersions, Guid runId)
         {
-            foreach (var versionConfig in configVersions)
+            List<ConfigVersion> list = configVersions.ToList();
+            for (int i = 0; i < list.Count; i++)
             {
+                ConfigVersion versionConfig = list[i];
                 var runnerExe = Path.Combine(runnerDir, versionConfig.Runner);
                 if (!File.Exists(runnerExe)) throw new InvalidOperationException($"The file {runnerExe} doesn't exist");
 
@@ -52,7 +55,7 @@ namespace UmbracoBenchmarks
 
                 using (Process process = new Process())
                 {
-                    ProcessStartInfo myProcessStartInfo = new ProcessStartInfo(umbracoRunnerExe, $"{umbracoFolder} {versionConfig.Version} {runId}")
+                    ProcessStartInfo myProcessStartInfo = new ProcessStartInfo(umbracoRunnerExe, $"{umbracoFolder} {versionConfig.Version} {runId} {i}")
                     {
                         UseShellExecute = false,
                         //WorkingDirectory = sourceFolder
