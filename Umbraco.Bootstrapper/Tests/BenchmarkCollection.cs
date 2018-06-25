@@ -8,9 +8,9 @@ namespace UmbracoBenchmarks.Tools.Tests
     public class BenchmarkCollection
     {
 
-        public static object RunBenchmarks(string version, DirectoryInfo artifactFolder, Action globalSetupAction, Action globalCleanupAction)
+        public static object RunBenchmarks(string version, Guid runId, DirectoryInfo artifactFolder, Action globalSetupAction, Action globalCleanupAction)
         {
-            var defaultConfig = new UmbracoDefaultConfig(version, artifactFolder, globalSetupAction, globalCleanupAction);
+            var defaultConfig = new UmbracoDefaultConfig(version, runId, artifactFolder, globalSetupAction, globalCleanupAction);
 
             //TODO: here's how we can run benchmarks for certain categories or filters https://github.com/dotnet/BenchmarkDotNet/issues/248
             // now we need to find a way to get a Summary back for each process and then combine those!

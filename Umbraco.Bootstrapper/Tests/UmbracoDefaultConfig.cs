@@ -3,6 +3,7 @@ using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Engines;
 using BenchmarkDotNet.Exporters.Csv;
 using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Reports;
 using BenchmarkDotNet.Toolchains.InProcess;
 using BenchmarkDotNet.Validators;
 using System;
@@ -13,7 +14,7 @@ namespace UmbracoBenchmarks.Tools.Tests
 {
     public class UmbracoDefaultConfig : ManualConfig
     {
-        public UmbracoDefaultConfig(string version, DirectoryInfo artifactFolder, Action globalSetupAction, Action globalCleanupAction)
+        public UmbracoDefaultConfig(string version, Guid runId, DirectoryInfo artifactFolder, Action globalSetupAction, Action globalCleanupAction)
         {
             ArtifactsPath = artifactFolder.FullName;
 
@@ -25,9 +26,8 @@ namespace UmbracoBenchmarks.Tools.Tests
             Add(CsvExporter.Default);
             
             Add(DefaultConfig.Instance.GetColumnProviders().ToArray());
-            
-            Add(CsvMeasurementsExporter.Default);
-
+            Add(new AppendingCsvExporter(runId));
+            Set(new SummaryStyle { PrintUnitsInContent = false });
             //Add(new TagColumn("Ver", name => version));
 
             GlobalSetupCallbacks.AddSetup(globalSetupAction);

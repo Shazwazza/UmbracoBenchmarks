@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?> 
 <versions>
     <version value="7.7.0" source="https://our.umbraco.org/ReleaseDownload?id=271889" runner="7.7.0\UmbracoBenchmarks.77.exe" />
-    <!--<version value="7.8.0" source="https://our.umbraco.org/ReleaseDownload?id=271897" runner="7.8.0\UmbracoBenchmarks.78.exe" />
+    <version value="7.8.0" source="https://our.umbraco.org/ReleaseDownload?id=271897" runner="7.8.0\UmbracoBenchmarks.78.exe" />
     <version value="7.9.0" source="https://our.umbraco.org/ReleaseDownload?id=273358" runner="7.8.0\UmbracoBenchmarks.78.exe" />
     <version value="7.10.0" source="https://our.umbraco.org/ReleaseDownload?id=273516" runner="7.8.0\UmbracoBenchmarks.78.exe" />
-    <version value="7.11.0" source="https://our.umbraco.org/ReleaseDownload?id=273644" runner="7.8.0\UmbracoBenchmarks.78.exe" />-->
+    <version value="7.11.0" source="https://our.umbraco.org/ReleaseDownload?id=273644" runner="7.8.0\UmbracoBenchmarks.78.exe" />
 </versions>

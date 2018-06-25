@@ -17,6 +17,7 @@ namespace UmbracoBenchmarks._77
             var consoleArgs = ConsoleHelper.ParseArgs(args);
             var result = BenchmarkCollection.RunBenchmarks(
                 UmbracoVersion.Current.ToString(),
+                consoleArgs.RunId,
                 consoleArgs.ArtifactFolder,
                 () => StartUmbraco(consoleArgs),
                 ShutdownUmbraco);
