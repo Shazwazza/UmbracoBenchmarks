@@ -15,6 +15,7 @@ namespace UmbracoBenchmarks.Tools.Tests
     {
         private ApplicationContext _appCtx;
         private IContentType _contentType;
+        private IContent _existing;
         private string _alias;
 
         public override void Setup()
@@ -22,6 +23,7 @@ namespace UmbracoBenchmarks.Tools.Tests
             base.Setup();
             _appCtx = ApplicationContext.Current;
             _contentType = _appCtx.Services.ContentTypeService.GetAllContentTypes().First();
+            _existing = CreateContent("test_" + Guid.NewGuid());
         }
 
         [IterationSetup]
@@ -30,13 +32,30 @@ namespace UmbracoBenchmarks.Tools.Tests
             _alias = "test_" + Guid.NewGuid();
         }
 
+        private IContent CreateContent(string alias)
+        {
+            var c = new Content(alias, -1, _contentType);
+            foreach (var p in _contentType.PropertyTypes)
+            {
+                c.SetValue(p.Alias, Guid.NewGuid().ToString());
+            }
+            _appCtx.Services.ContentService.Save(c);
+            return c;
+        }
+
         [Benchmark]
         public void CreateContent()
-        {   
-            var c = new Content(_alias, -1, _contentType);
-            foreach (var p in _contentType.PropertyTypes) 
+        {
+            var c = CreateContent(_alias);
+        }
+
+        [Benchmark]
+        public void UpdateContent()
+        {
+            var c = _existing;
+            foreach (var p in _contentType.PropertyTypes)
             {
-                c.SetPropertyValue(p.Alias, Guid.NewGuid().ToString());
+                c.SetValue(p.Alias, Guid.NewGuid().ToString());
             }
             _appCtx.Services.ContentService.Save(c);
         }

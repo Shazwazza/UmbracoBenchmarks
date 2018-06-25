@@ -3,12 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.XPath;
-using UmbracoBenchmarks.Infrastructure;
 
 namespace UmbracoBenchmarks
 {
@@ -39,22 +35,9 @@ namespace UmbracoBenchmarks
                 //AddConfigTransforms(umbracoFolder, runnerExe);
             }
 
-            //NOTE: For testing
-            //BenchmarkRunner.Run<TestBenchmark>(new AllowNonOptimized());
-
-            //NOTE: Attempt at trying a custom toolchain
-            //RunCustomBenchmarks(dlDir, runnerDir, configVersions, runId);
-
-            //NOTE: Runs our cmd apps in process (and is 'working')
             RunSeparateCmdBenchmarks(dlDir, runnerDir, configVersions, runId);
         }
-
-        private void RunCustomBenchmarks(string dlDir, string runnerDir, IEnumerable<ConfigVersion> configVersions, Guid runId)
-        {
-            var umbBenchmarkConfig = new UmbracoBenchmarkConfig(dlDir, runnerDir, configVersions, runId);
-            BenchmarkRunner.Run<TestBenchmark>(umbBenchmarkConfig);
-        }
-
+        
         private void RunSeparateCmdBenchmarks(string dlDir, string runnerDir, IEnumerable<ConfigVersion> configVersions, Guid runId)
         {
             foreach (var versionConfig in configVersions)

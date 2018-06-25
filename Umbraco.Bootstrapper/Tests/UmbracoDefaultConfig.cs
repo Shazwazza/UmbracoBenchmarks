@@ -21,21 +21,20 @@ namespace UmbracoBenchmarks.Tools.Tests
             Add(JitOptimizationsValidator.DontFailOnError); // ALLOW NON-OPTIMIZED DLLS
 
             Add(DefaultConfig.Instance.GetLoggers().ToArray());
-            
-            //Add(DefaultConfig.Instance.GetExporters().ToArray());
-            Add(CsvExporter.Default);
-            
             Add(DefaultConfig.Instance.GetColumnProviders().ToArray());
+
+            //csv exporter per version
+            Add(CsvExporter.Default);
+            //combined csv report per runId
             Add(new AppendingCsvExporter(runId));
+
             Set(new SummaryStyle { PrintUnitsInContent = false });
-            //Add(new TagColumn("Ver", name => version));
 
             GlobalSetupCallbacks.AddSetup(globalSetupAction);
             GlobalSetupCallbacks.AddCleanup(globalCleanupAction);
 
             var job = Job.ShortRun
                 .WithLaunchCount(1)
-                //.With((IEngineFactory)new UmbracoEngineFactory(globalSetupAction, globalCleanupAction))
                 .With(RunStrategy.Monitoring)
                 .With(InProcessToolchain.Instance)
                 .WithId(version);

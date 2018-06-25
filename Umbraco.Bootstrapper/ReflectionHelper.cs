@@ -8,8 +8,34 @@ using System.Threading.Tasks;
 namespace UmbracoBenchmarks.Tools
 {
 
+
     public static class ReflectionHelper
     {
+        /// <summary>
+        /// Used for dynamic casting
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="o"></param>
+        /// <returns></returns>
+        public static T Cast<T>(object o)
+        {
+            return (T)o;
+        }
+
+        /// <summary>
+        /// Used for dynamic casting
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns></returns>
+        public static object CastTo(object from, Type to)
+        {
+            //create an instance of the generic method above
+            var castMethod = typeof(ReflectionHelper).GetMethod("Cast", BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).MakeGenericMethod(to);
+            object castedObject = castMethod.Invoke(null, new object[] { from });
+            return castedObject;
+        }
+
         public static object GetStaticProperty(this Type type, string propertyName, Func<IEnumerable<PropertyInfo>, PropertyInfo> filter = null)
         {
             var propertyInfo = GetPropertyInfo(type, propertyName, filter);

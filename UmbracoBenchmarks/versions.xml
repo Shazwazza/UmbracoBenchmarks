@@ -1,8 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?> 
 <versions>
-    <version value="7.7.0" source="https://our.umbraco.org/ReleaseDownload?id=271889" runner="7.7.0\UmbracoBenchmarks.77.exe" />
-    <version value="7.8.0" source="https://our.umbraco.org/ReleaseDownload?id=271897" runner="7.8.0\UmbracoBenchmarks.78.exe" />
-    <version value="7.9.0" source="https://our.umbraco.org/ReleaseDownload?id=273358" runner="7.8.0\UmbracoBenchmarks.78.exe" />
-    <version value="7.10.0" source="https://our.umbraco.org/ReleaseDownload?id=273516" runner="7.8.0\UmbracoBenchmarks.78.exe" />
-    <version value="7.11.0" source="https://our.umbraco.org/ReleaseDownload?id=273644" runner="7.8.0\UmbracoBenchmarks.78.exe" />
+    <version value="7.5.0" source="https://our.umbraco.com/ReleaseDownload?id=155558" runner="7.5.0\UmbracoBenchmarks.75.exe" />
+    <!--TODO: Need to create a 7.6.0 runner-->
+    <!--<version value="7.6.0" source="https://our.umbraco.com/ReleaseDownload?id=270489" runner="7.5.0\UmbracoBenchmarks.75.exe" />-->
+    <version value="7.7.0" source="https://our.umbraco.com/ReleaseDownload?id=271889" runner="7.7.0\UmbracoBenchmarks.77.exe" />
+    <version value="7.7.13" source="https://our.umbraco.com/ReleaseDownload?id=273256" runner="7.7.0\UmbracoBenchmarks.77.exe" />
+    <version value="7.8.0" source="https://our.umbraco.com/ReleaseDownload?id=271897" runner="7.8.0\UmbracoBenchmarks.78.exe" />
+    <version value="7.8.3" source="https://our.umbraco.com/ReleaseDownload?id=273945" runner="7.8.0\UmbracoBenchmarks.78.exe" />
+    <version value="7.9.0" source="https://our.umbraco.com/ReleaseDownload?id=273358" runner="7.8.0\UmbracoBenchmarks.78.exe" />
+    <version value="7.9.6" source="https://our.umbraco.com/ReleaseDownload?id=273948" runner="7.8.0\UmbracoBenchmarks.78.exe" />
+    <version value="7.10.0" source="https://our.umbraco.com/ReleaseDownload?id=273516" runner="7.8.0\UmbracoBenchmarks.78.exe" />
+    <version value="7.10.4" source="https://our.umbraco.com/ReleaseDownload?id=273914" runner="7.8.0\UmbracoBenchmarks.78.exe" />
+    <version value="7.11.0" source="https://our.umbraco.com/ReleaseDownload?id=273644" runner="7.8.0\UmbracoBenchmarks.78.exe" />
 </versions>

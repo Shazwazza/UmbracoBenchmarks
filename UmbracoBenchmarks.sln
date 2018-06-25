@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoBenchmarks.77", "Umb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoBenchmarks.78", "Umbraco.78\UmbracoBenchmarks.78.csproj", "{DCF9D27F-1FEB-4C28-A195-59CC2F40A41D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UmbracoBenchmarks.75", "UmbracoBenchmarks.75\UmbracoBenchmarks.75.csproj", "{28B6F666-FCD0-4C57-93B9-E8CE897AB65D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{DCF9D27F-1FEB-4C28-A195-59CC2F40A41D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCF9D27F-1FEB-4C28-A195-59CC2F40A41D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCF9D27F-1FEB-4C28-A195-59CC2F40A41D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28B6F666-FCD0-4C57-93B9-E8CE897AB65D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28B6F666-FCD0-4C57-93B9-E8CE897AB65D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28B6F666-FCD0-4C57-93B9-E8CE897AB65D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28B6F666-FCD0-4C57-93B9-E8CE897AB65D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -310,7 +310,6 @@
     <Compile Include="Tests\ContentTypeOperations.cs" />
     <Compile Include="Tests\GlobalSetupCallbacks.cs" />
     <Compile Include="Tests\UmbracoDefaultConfig.cs" />
-    <Compile Include="Tests\UmbracoEngineFactory.cs" />
     <Compile Include="Tests\UmbracoOperation.cs" />
     <Compile Include="UmbracoUtilities.cs" />
   </ItemGroup>
