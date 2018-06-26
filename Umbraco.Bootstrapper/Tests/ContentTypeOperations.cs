@@ -24,23 +24,32 @@ namespace UmbracoBenchmarks.Tools.Tests
     [OrderProvider(methodOrderPolicy: MethodOrderPolicy.Declared)]
     public class ContentTypeOperations : UmbracoOperation
     {
-        private ApplicationContext _appCtx;
         private IContentType _existing;
         private List<IDataTypeDefinition> _dataTypes;
         private string _alias;
 
-        public override void Setup()
+        public override void SetupDefault()
         {
-            base.Setup();
-
-            _appCtx = ApplicationContext.Current;
-            var allDts = _appCtx.Services.DataTypeService.GetAllDataTypeDefinitions().ToList();
+            base.SetupDefault();
+            var allDts = ApplicationContext.Services.DataTypeService.GetAllDataTypeDefinitions().ToList();
             _dataTypes = new[] { "Label", "Textstring", "Richtext editor" }.Select(x =>
             {
                 var dt = allDts.First(d => d.Name == x);
                 if (dt == null) throw new InvalidOperationException($"No data type found by name {x}");
                 return dt;
             }).ToList();
+        }
+
+        [GlobalSetup(Target = nameof(CreateContentType))]
+        public void SetupCreateContentType()
+        {
+            SetupDefault();
+        }
+
+        [GlobalSetup(Target = nameof(UpdateContentType))]
+        public void SetupUpdateContentType()
+        {
+            SetupDefault();
 
             _existing = CreateNew("test_" + Guid.NewGuid());
         }
@@ -65,7 +74,7 @@ namespace UmbracoBenchmarks.Tools.Tests
             ct.AddPropertyType(new PropertyType(_dataTypes[0]) { Alias = "test1" }, "test1");
             ct.AddPropertyType(new PropertyType(_dataTypes[1]) { Alias = "test2" }, "test2");
             ct.AddPropertyType(new PropertyType(_dataTypes[2]) { Alias = "test3" }, "test3");
-            _appCtx.Services.ContentTypeService.Save(ct);
+            ApplicationContext.Services.ContentTypeService.Save(ct);
             return ct;
         }
 
@@ -88,8 +97,7 @@ namespace UmbracoBenchmarks.Tools.Tests
             ct.AddPropertyType(new PropertyType(_dataTypes[0]) { Alias = name1 }, name1);
             ct.AddPropertyType(new PropertyType(_dataTypes[1]) { Alias = name2 }, name2);
             ct.AddPropertyType(new PropertyType(_dataTypes[2]) { Alias = name3 }, name3);
-            _appCtx.Services.ContentTypeService.Save(ct);
-            _existing = ct;
+            ApplicationContext.Services.ContentTypeService.Save(ct);
         }
     }
 

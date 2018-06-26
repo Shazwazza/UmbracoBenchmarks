@@ -13,16 +13,26 @@ namespace UmbracoBenchmarks.Tools.Tests
 
     public class ContentOperations : UmbracoOperation
     {
-        private ApplicationContext _appCtx;
         private IContentType _contentType;
         private IContent _existing;
         private string _alias;
 
-        public override void Setup()
+        public override void SetupDefault()
         {
-            base.Setup();
-            _appCtx = ApplicationContext.Current;
-            _contentType = _appCtx.Services.ContentTypeService.GetAllContentTypes().First();
+            base.SetupDefault();
+            _contentType = ApplicationContext.Services.ContentTypeService.GetAllContentTypes().First();
+        }
+
+        [GlobalSetup(Target = nameof(CreateContent))]
+        public void SetupCreateContent()
+        {
+            SetupDefault();
+        }
+
+        [GlobalSetup(Target = nameof(UpdateContent))]
+        public void SetupUpdateContent()
+        {
+            SetupDefault();
             _existing = CreateContent("test_" + Guid.NewGuid());
         }
 
@@ -39,7 +49,7 @@ namespace UmbracoBenchmarks.Tools.Tests
             {
                 c.SetValue(p.Alias, Guid.NewGuid().ToString());
             }
-            _appCtx.Services.ContentService.Save(c);
+            ApplicationContext.Services.ContentService.Save(c);
             return c;
         }
 
@@ -57,7 +67,7 @@ namespace UmbracoBenchmarks.Tools.Tests
             {
                 c.SetValue(p.Alias, Guid.NewGuid().ToString());
             }
-            _appCtx.Services.ContentService.Save(c);
+            ApplicationContext.Services.ContentService.Save(c);
         }
     }
 

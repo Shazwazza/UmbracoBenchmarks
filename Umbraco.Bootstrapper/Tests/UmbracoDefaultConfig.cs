@@ -33,10 +33,8 @@ namespace UmbracoBenchmarks.Tools.Tests
             GlobalSetupCallbacks.AddSetup(globalSetupAction);
             GlobalSetupCallbacks.AddCleanup(globalCleanupAction);
 
-            var job = Job.ShortRun
-                .WithLaunchCount(2)
-                .WithWarmupCount(5)
-                .WithTargetCount(10)
+            var job = Job.MediumRun
+                .WithLaunchCount(1) //we're running in process so only 1 makes sense
                 .With(RunStrategy.Monitoring)
                 .With(InProcessToolchain.Instance)
                 .WithId(version);
